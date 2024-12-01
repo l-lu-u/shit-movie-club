@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Codystar:wght@300;400&family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Krona+One&family=Rock+3D&family=Rubik+Bubbles&display=swap');
+
+.hidden {
+    display: none;
+}
+
+:root {
+    /* Font Family */
+    --global--font-heading: "Rubik Bubbles", serif;
+    --global--font-body: "Comic Neue", serif;
+
+    /* Font Size */
+    --global--font-size-h1: 7.2rem;
+    --global--font-size-h2: 3.6rem;
+    --global--font-size-h3: 1.8rem;
+    --global--font-size-h4: 1.4rem;
+    --global--font-size-p: 2.4rem;
+    --global--letter-spacing: normal;
+
+    /* Font Weight */
+    --global--font-weight-regular: 400;
+    --global--font-weight-emphasis: 600;
+
+    /* Spacing & Sizing */
+    --global--spacing-primary: 4rem;
+    --global--spacing-secondary: 1rem;
+    --global--sizing-icon: 2.4rem;
+    --global--sizing-icon-L: 3.6rem;
+    --global--border-radius: 3.6rem;
+
+    /* Colour */
+    --content-primary: #8A7E6B;
+    --bg-light: #FAFFD5;
+}
+
+/* Container */
+html {
+    font-size: 10px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-size: var(--global--font-size-p);
+    font-family: var(--global--font-body);
+    color: var(--content-primary);
+    display: flex;
+    height: 100%;
+    font-weight: 500;
+}
+html,
+body,
+section {
+    block-size: 100%;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--global--font-heading);
+    font-weight: 300;
+}
+
+h1 {
+    font-size: var(--global--font-size-h1);
+}
+
+/* SECTION */
+.section {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#section-intro {
+    background-color: var(--bg-light);
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; 
+    text-align: center;
+}
