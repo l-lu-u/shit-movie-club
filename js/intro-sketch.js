@@ -20,10 +20,9 @@ function setup() {
 
   iris = color(25, 80, 80, 0.4);
 
-  // Request webcam access on page load
   video = createCapture(VIDEO, function () {
     useWebcam = true;
-    video.size(160, 120);
+    video.size(w, h);
     video.hide();
 
     tracker = new clm.tracker();
@@ -58,14 +57,13 @@ function draw() {
     drawEye(eye1, iris);
     drawEye(eye2, iris);
   } else {
-    // Mouse tracking mode (no fallback switch mid-interaction)
-    const eye1 = createMouseEye(mouseX - eyeDistance, mouseY);
-    const eye2 = createMouseEye(mouseX + eyeDistance, mouseY);
-    leftEyePath.push(eye1.outline);
-    rightEyePath.push(eye2.outline);
+    // const eye1 = createMouseEye(mouseX - eyeDistance, mouseY);
+    // const eye2 = createMouseEye(mouseX + eyeDistance, mouseY);
+    // leftEyePath.push(eye1.outline);
+    // rightEyePath.push(eye2.outline);
 
-    drawEye(eye1, iris);
-    drawEye(eye2, iris);
+    // drawEye(eye1, iris);
+    // drawEye(eye2, iris);
   }
 
   // Draw paths
