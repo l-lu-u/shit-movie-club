@@ -133,6 +133,15 @@ h2.subtitle-site {
     color: var(--content-primary)
 }
 
+.language-group h4::before, .genre-group h4::before {
+    content:"+";
+    padding: 1rem;
+}
+
+.language-group h4.expanded::before, .genre-group h4.expanded::before {
+    content:"-";
+}
+
 .genre-button, .language.button {
     margin-bottom: 2rem;
 }

@@ -1,7 +1,7 @@
 // Set dimensions and margins
 const width = 600;
 const height = 600;
-const margin = { top: 30, right: 20, bottom: 20, left: 70 };
+const margin = { top: 40, right: 20, bottom: 20, left: 70 };
 const totalMovies = 23;
 
 // Append SVG
@@ -126,13 +126,20 @@ d3.json("./data/movies.json").then(function (data) {
         .style("font-size", "14px")
         .style("font-weight", "500"); 
 
-    // Add Y-axis label
+    // Add axis label
     svg.append("text")
         .attr("y", margin.top / 2)
         .attr("x", margin.left / 2)
         .style("text-anchor", "left")
         .style("font-size", "1.4rem")
-        .text("Production Year");
+        .text("Produced in");
+
+    svg.append("text")
+        .attr("y", height)
+        .attr("x", width - 4*margin.right)
+        .style("text-anchor", "right")
+        .style("font-size", "1.4rem")
+        .text("Watched in");
 
     svg.selectAll(".domain").remove();
 
