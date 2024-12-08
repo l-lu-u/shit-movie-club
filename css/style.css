@@ -97,13 +97,12 @@ h2.subtitle-site {
 }
 
 .site-intro {
-
+    width: 25%;
 }
 
 #bubble-chart {
     display: flex;
     justify-content: center;
-
 }
 
 .content {

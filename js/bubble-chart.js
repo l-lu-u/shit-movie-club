@@ -2,6 +2,7 @@
 const width = 600;
 const height = 600;
 const margin = { top: 30, right: 20, bottom: 20, left: 70 };
+const totalMovies = 23;
 
 // Append SVG
 const svg = d3.select("#bubble-chart")
@@ -191,7 +192,7 @@ d3.json("./data/movies.json").then(function (data) {
         .style("opacity", 0.7);
 
    // Append button groups for filtering
-    const buttonContainer = d3.select("#bubble-chart")
+    const buttonContainer = d3.select("#section-bubble")
     .append("div")
     .attr("class", "button-container");
 
@@ -226,7 +227,7 @@ d3.json("./data/movies.json").then(function (data) {
 
         buttons.append("div")
             .attr("class", "bar-highlight")
-            .style("width", d => `${(d.count / (filterType === "language" ? totalLanguages : totalGenres)) * 100}%`);
+            .style("width", d => `${(d.count / totalMovies) * 100}%`);
 
         buttons.append("button")
             .text(d => `${d.name} (${d.count})`)
