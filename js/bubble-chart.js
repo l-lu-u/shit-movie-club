@@ -1,7 +1,7 @@
 // Set dimensions and margins
-const width = 1200;
-const height = 800;
-const margin = { top: 20, right: 20, bottom: 20, left: 70 };
+const width = 750;
+const height = 600;
+const margin = { top: 30, right: 20, bottom: 20, left: 70 };
 
 // Append SVG
 const svg = d3.select("#bubble-chart")
@@ -24,6 +24,27 @@ d3.json("./data/movies.json").then(function (data) {
         link: d.link,
     }));
 
+    const languages = Array.from(new Set(processedData.flatMap(d => d.languages))); // Unique languages
+    const genres = Array.from(new Set(processedData.flatMap(d => d.genres))); // Unique genres
+
+    // Calculate occurrences of languages and genres
+    const languageOccurrences = languages.map(language => ({
+        name: language,
+        count: processedData.filter(d => d.languages.includes(language)).length,
+    }));
+    const genreOccurrences = genres.map(genre => ({
+        name: genre,
+        count: processedData.filter(d => d.genres.includes(genre)).length,
+    }));
+
+    // Sort by occurrence
+    languageOccurrences.sort((a, b) => b.count - a.count);
+    genreOccurrences.sort((a, b) => b.count - a.count);
+
+    // Total occurrences for percentage calculation
+    const totalLanguages = d3.sum(languageOccurrences, d => d.count);
+    const totalGenres = d3.sum(genreOccurrences, d => d.count);
+
     // Sort data by screeningDate, then by id
     processedData.sort((a, b) => {
         if (a.screeningDate < b.screeningDate) return -1;
@@ -43,9 +64,8 @@ d3.json("./data/movies.json").then(function (data) {
         ])
         .range([height - margin.bottom, margin.top]);
 
-    // Axis generators
     const xAxis = d3.axisBottom(xScale)
-        .ticks(d3.timeMonth.every(1)) // Tick every month
+        .ticks(d3.timeMonth.every(3))
         .tickFormat(d3.timeFormat("%m/%Y"));
 
         const yAxis = d3.axisLeft(yScale)
@@ -69,10 +89,10 @@ d3.json("./data/movies.json").then(function (data) {
 
     // Add Y-axis label
     svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", margin.left / 2)
-        .attr("x", -(height / 2))
-        .style("text-anchor", "middle")
+        .attr("y", margin.top / 2)
+        .attr("x", margin.left / 2)
+        .style("text-anchor", "left")
+        .style("font-size", "1rem")
         .text("Production Year");
 
     // Tooltip
@@ -124,4 +144,104 @@ d3.json("./data/movies.json").then(function (data) {
             tooltip.style("visibility", "hidden");
             d3.select(this).style("stroke", "none").style("opacity", 0.7);
         });
+
+   // Append button groups for filtering
+    const buttonContainer = d3.select("#section-bubble")
+    .append("div")
+    .attr("class", "button-container");
+
+    let activeFilters = { language: [], genre: [] }; // Track active filters
+
+    // Function to create buttons with accordion
+    function createAccordion(container, title, data, filterType) {
+    const group = container.append("div").attr("class", `${filterType}-group`);
+
+    // Accordion title
+    const header = group.append("h4")
+        .text(title)
+        .style("cursor", "pointer")
+        .on("click", function () {
+            const isExpanded = d3.select(this).classed("expanded");
+            d3.select(this).classed("expanded", !isExpanded);
+            d3.select(`.${filterType}-buttons`).style("display", isExpanded ? "none" : "block");
+        });
+
+    // Buttons container
+    const buttonsContainer = group.append("div")
+        .attr("class", `${filterType}-buttons`)
+        .style("display", "none"); // Initially collapsed;
+
+    // Create buttons with highlight bars
+    const buttons = buttonsContainer.selectAll("div")
+        .data(data)
+        .enter()
+        .append("div")
+        .attr("class", "button-group");
+
+    // Highlight bar
+    buttons.append("div")
+        .attr("class", "bar-total");
+
+    buttons.append("div")
+        .attr("class", "bar-highlight")
+        .style("width", d => `${(d.count / (filterType === "language" ? totalLanguages : totalGenres)) * 100}%`);
+
+    // Button
+    buttons.append("button")
+        .text(d => `${d.name} (${d.count})`)
+        .style("position", "relative")
+        .style("z-index", 1)
+        .style("margin", "0 5px")
+        .style("padding", "5px 10px")
+        .style("border", "none")
+        .style("background-color", "transparent")
+        .style("cursor", "pointer")
+        .on("click", function (event, d) {
+            const isActive = d3.select(this).classed("active");
+            d3.select(this).classed("active", !isActive);
+
+            // Update active filters
+            if (!isActive) activeFilters[filterType].push(d.name);
+            else activeFilters[filterType] = activeFilters[filterType].filter(name => name !== d.name);
+
+            // Apply filters
+            applyFilters();
+        });
+    }
+
+    // Apply all active filters
+    function applyFilters() {
+    svg.selectAll("circle")
+        .transition()
+        .duration(300)
+        .style("opacity", d => {
+            const matchesLanguage = activeFilters.language.length === 0 || activeFilters.language.some(lang => d.languages.includes(lang));
+            const matchesGenre = activeFilters.genre.length === 0 || activeFilters.genre.some(gen => d.genres.includes(gen));
+            return matchesLanguage && matchesGenre ? 0.7 : 0.1;
+        });
+    }
+
+    // Create language accordion
+    createAccordion(buttonContainer, "by Language", languageOccurrences, "language");
+
+    // Create genre accordion
+    createAccordion(buttonContainer, "by Genre", genreOccurrences, "genre");
+
+    // Reset Button
+    buttonContainer.append("button")
+    .text("Reset Filters")
+    .style("margin-top", "10px")
+    .style("padding", "10px")
+    .style("background-color", "lightgray")
+    .on("click", () => {
+        activeFilters = { language: [], genre: [] }; // Reset active filters
+        d3.selectAll(".language-buttons button, .genre-buttons button").classed("active", false);
+        svg.selectAll("circle")
+            .transition()
+            .duration(300)
+            .style("opacity", 0.7); // Reset opacity for all bubbles
+    });
+
 });
+
+

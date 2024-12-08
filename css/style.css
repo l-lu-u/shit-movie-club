@@ -17,6 +17,9 @@
     --global--font-size-p: 2.4rem;
     --global--letter-spacing: normal;
 
+    --base-font-size: 3.6rem;  
+    --base-spacing: 3rem;  
+
     /* Font Weight */
     --global--font-weight-regular: 400;
     --global--font-weight-emphasis: 600;
@@ -31,6 +34,12 @@
     /* Colour */
     --content-primary: #8A7E6B;
     --bg-light: #FAFFD5;
+}
+
+@media all and (max-width: 450px) {
+    :root {
+        --base-font-size: 1.8rem;
+    }
 }
 
 /* Container */
@@ -52,6 +61,7 @@ html,
 body,
 section {
     block-size: 100%;
+    background-color: var(--bg-light);
 }
 
 h1, h2, h3, h4 {
@@ -60,20 +70,24 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-    font-size: var(--global--font-size-h1);
+    font-size: calc(var(--base-font-size)*2);
 }
 
 /* SECTION */
 .section {
     width: 100%;
     min-height: 100%;
-    /* overflow: hidden; */
     position: relative;
-    padding: var(--global--spacing-secondary);
 }
 
 #section-intro {
-    background-color: var(--bg-light);
+
+    overflow: hidden;
+}
+
+#section-bubble {
+    display: flex;
+    flex-direction: row;
 }
 
 .content {
@@ -83,4 +97,52 @@ h1 {
     transform: translate(-50%, -50%);
     z-index: 2; 
     text-align: center;
+}
+
+/* FILTER */
+.button-container {
+    display: flex;
+    flex-direction: column;
+}
+.button-container button {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-size: 1.2rem;
+}
+
+.genre-button, .language.button {
+    margin-bottom: 2rem;
+}
+
+.button-container button:hover {
+    background-color: transparent;
+}
+
+.button-container h4 {
+    margin-bottom: 10px;
+}
+
+.button-group {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 5px;
+    height: 3rem;
+}
+
+.bar-total {
+    position: absolute;
+    background-color: khaki;
+    height: 1rem;
+    border-radius: 5rem;
+    width: 100%;
+}
+.bar-highlight {
+    position: absolute;
+    background-color: darkkhaki;
+    height: 1rem;
+    border-radius: 5rem;
 }
