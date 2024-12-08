@@ -32,8 +32,8 @@
     --global--border-radius: 3.6rem;
 
     /* Colour */
-    --content-primary: #8A7E6B;
-    --bg-light: #FAFFD5;
+    --content-primary: #86825f;
+    --bg-light: #f7ffe4;
 }
 
 @media all and (max-width: 450px) {
@@ -69,8 +69,14 @@ h1, h2, h3, h4 {
     font-weight: 300;
 }
 
-h1 {
-    font-size: calc(var(--base-font-size)*2);
+h1.title-site {
+    font-size: calc(var(--base-font-size)*1.2);
+    margin: 1rem 0;
+}
+
+h2.subtitle-site {
+    font-size: calc(var(--base-font-size)*0.8);
+    margin: 0.5rem 0;
 }
 
 /* SECTION */
@@ -81,13 +87,23 @@ h1 {
 }
 
 #section-intro {
-
     overflow: hidden;
 }
 
 #section-bubble {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
+}
+
+.site-intro {
+
+}
+
+#bubble-chart {
+    display: flex;
+    justify-content: center;
+
 }
 
 .content {
@@ -105,12 +121,17 @@ h1 {
     flex-direction: column;
 }
 .button-container button {
+    position: relative;
     padding: 5px 10px;
     border: none;
-    cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
     font-size: 1.2rem;
+    width: 100%;
+    z-index: 1;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--content-primary)
 }
 
 .genre-button, .language.button {

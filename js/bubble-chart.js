@@ -1,5 +1,5 @@
 // Set dimensions and margins
-const width = 750;
+const width = 600;
 const height = 600;
 const margin = { top: 30, right: 20, bottom: 20, left: 70 };
 
@@ -54,7 +54,7 @@ d3.json("./data/movies.json").then(function (data) {
 
     // Scales
     const xScale = d3.scaleTime()
-        .domain([new Date(2023, 0, 1), new Date(2024, 11, 31)]) // Jan 2023 to Dec 2024
+        .domain([new Date(2023, 1, 1), new Date(2024, 12, 31)]) // Jan 2023 to Dec 2024
         .range([margin.left, width - margin.right]);
 
     const yScale = d3.scaleLinear()
@@ -65,10 +65,10 @@ d3.json("./data/movies.json").then(function (data) {
         .range([height - margin.bottom, margin.top]);
 
     const xAxis = d3.axisBottom(xScale)
-        .ticks(d3.timeMonth.every(3))
+        .ticks(d3.timeMonth.every(4))
         .tickFormat(d3.timeFormat("%m/%Y"));
 
-        const yAxis = d3.axisLeft(yScale)
+    const yAxis = d3.axisLeft(yScale)
         .tickValues(
             d3.range(
                 Math.floor(d3.min(processedData, (d) => d.yearProduction) / 5) * 5,
@@ -77,6 +77,39 @@ d3.json("./data/movies.json").then(function (data) {
             )
         )
         .tickFormat(d3.format("d"));
+
+    const xGrid = d3.axisBottom(xScale)
+        .ticks(d3.timeMonth.every(2)) 
+        .tickSize(-(height - margin.top - margin.bottom))
+        .tickFormat(""); 
+    
+    svg.append("g")
+        .attr("class", "grid-line x-grid")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(xGrid)
+        .selectAll("line")
+        .style("stroke", "darkkhaki") 
+        .style("stroke-dasharray", "2,2") 
+    
+    // Y-Axis Grid Lines
+    const yGrid = d3.axisLeft(yScale)
+        .tickValues(
+            d3.range(
+                Math.floor(d3.min(processedData, d => d.yearProduction) / 5) * 5,
+                Math.ceil(d3.max(processedData, d => d.yearProduction) / 5) * 5 + 1,
+                5
+            )
+        )
+        .tickSize(-(width - margin.left - margin.right)) // Extend grid lines
+        .tickFormat(""); // Remove tick labels
+    
+    svg.append("g")
+        .attr("class", "grid-line y-grid")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(yGrid)
+        .selectAll("line")
+        .style("stroke", "darkkhaki") 
+        .style("stroke-dasharray", "2,2"); 
 
     // Draw axes
     svg.append("g")
@@ -87,13 +120,20 @@ d3.json("./data/movies.json").then(function (data) {
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(yAxis);
 
+    svg.selectAll(".tick text")
+        .style("font-family", "Comic Neue, serif")
+        .style("font-size", "14px")
+        .style("font-weight", "500"); 
+
     // Add Y-axis label
     svg.append("text")
         .attr("y", margin.top / 2)
         .attr("x", margin.left / 2)
         .style("text-anchor", "left")
-        .style("font-size", "1rem")
+        .style("font-size", "1.4rem")
         .text("Production Year");
+
+    svg.selectAll(".domain").remove();
 
     // Tooltip
     const tooltip = d3.select("body").append("div")
@@ -105,8 +145,7 @@ d3.json("./data/movies.json").then(function (data) {
         .style("padding", "10px")
         .style("border-radius", "5px");
 
-    // Add bubbles
-    const offset = 5; // Offset bubbles by this amount when they overlap
+    const offset = 5;
     const bubblePositions = {};
 
     svg.selectAll("circle")
@@ -145,8 +184,14 @@ d3.json("./data/movies.json").then(function (data) {
             d3.select(this).style("stroke", "none").style("opacity", 0.7);
         });
 
+     svg.selectAll("circle")
+        .style("opacity", 0)
+        .transition()
+        .duration(1000)
+        .style("opacity", 0.7);
+
    // Append button groups for filtering
-    const buttonContainer = d3.select("#section-bubble")
+    const buttonContainer = d3.select("#bubble-chart")
     .append("div")
     .attr("class", "button-container");
 
@@ -154,80 +199,60 @@ d3.json("./data/movies.json").then(function (data) {
 
     // Function to create buttons with accordion
     function createAccordion(container, title, data, filterType) {
-    const group = container.append("div").attr("class", `${filterType}-group`);
+        const group = container.append("div").attr("class", `${filterType}-group`);
 
-    // Accordion title
-    const header = group.append("h4")
-        .text(title)
-        .style("cursor", "pointer")
-        .on("click", function () {
-            const isExpanded = d3.select(this).classed("expanded");
-            d3.select(this).classed("expanded", !isExpanded);
-            d3.select(`.${filterType}-buttons`).style("display", isExpanded ? "none" : "block");
-        });
+        // Accordion title
+        const header = group.append("h4")
+            .text(title)
+            .style("cursor", "pointer")
+            .on("click", function () {
+                const isExpanded = d3.select(this).classed("expanded");
+                d3.select(this).classed("expanded", !isExpanded);
+                d3.select(`.${filterType}-buttons`).style("display", isExpanded ? "none" : "block");
+            });
 
-    // Buttons container
-    const buttonsContainer = group.append("div")
-        .attr("class", `${filterType}-buttons`)
-        .style("display", "none"); // Initially collapsed;
+        const buttonsContainer = group.append("div")
+            .attr("class", `${filterType}-buttons`)
+            .style("display", "none"); // Initially collapsed;
 
-    // Create buttons with highlight bars
-    const buttons = buttonsContainer.selectAll("div")
-        .data(data)
-        .enter()
-        .append("div")
-        .attr("class", "button-group");
+        const buttons = buttonsContainer.selectAll("div")
+            .data(data)
+            .enter()
+            .append("div")
+            .attr("class", "button-group");
 
-    // Highlight bar
-    buttons.append("div")
-        .attr("class", "bar-total");
+        buttons.append("div")
+            .attr("class", "bar-total");
 
-    buttons.append("div")
-        .attr("class", "bar-highlight")
-        .style("width", d => `${(d.count / (filterType === "language" ? totalLanguages : totalGenres)) * 100}%`);
+        buttons.append("div")
+            .attr("class", "bar-highlight")
+            .style("width", d => `${(d.count / (filterType === "language" ? totalLanguages : totalGenres)) * 100}%`);
 
-    // Button
-    buttons.append("button")
-        .text(d => `${d.name} (${d.count})`)
-        .style("position", "relative")
-        .style("z-index", 1)
-        .style("margin", "0 5px")
-        .style("padding", "5px 10px")
-        .style("border", "none")
-        .style("background-color", "transparent")
-        .style("cursor", "pointer")
-        .on("click", function (event, d) {
-            const isActive = d3.select(this).classed("active");
-            d3.select(this).classed("active", !isActive);
+        buttons.append("button")
+            .text(d => `${d.name} (${d.count})`)
+            .on("click", function (event, d) {
+                const isActive = d3.select(this).classed("active");
+                d3.select(this).classed("active", !isActive);
 
-            // Update active filters
-            if (!isActive) activeFilters[filterType].push(d.name);
-            else activeFilters[filterType] = activeFilters[filterType].filter(name => name !== d.name);
+                if (!isActive) activeFilters[filterType].push(d.name);
+                else activeFilters[filterType] = activeFilters[filterType].filter(name => name !== d.name);
 
-            // Apply filters
-            applyFilters();
-        });
+                applyFilters();
+            });
     }
 
-    // Apply all active filters
     function applyFilters() {
-    svg.selectAll("circle")
-        .transition()
-        .duration(300)
-        .style("opacity", d => {
-            const matchesLanguage = activeFilters.language.length === 0 || activeFilters.language.some(lang => d.languages.includes(lang));
-            const matchesGenre = activeFilters.genre.length === 0 || activeFilters.genre.some(gen => d.genres.includes(gen));
-            return matchesLanguage && matchesGenre ? 0.7 : 0.1;
-        });
+        svg.selectAll("circle")
+            .transition()
+            .duration(300)
+            .style("opacity", d => {
+                const matchesLanguage = activeFilters.language.length === 0 || activeFilters.language.some(lang => d.languages.includes(lang));
+                const matchesGenre = activeFilters.genre.length === 0 || activeFilters.genre.some(gen => d.genres.includes(gen));
+                return matchesLanguage && matchesGenre ? 0.7 : 0.1;
+            });
     }
 
-    // Create language accordion
-    createAccordion(buttonContainer, "by Language", languageOccurrences, "language");
 
-    // Create genre accordion
-    createAccordion(buttonContainer, "by Genre", genreOccurrences, "genre");
-
-    // Reset Button
     buttonContainer.append("button")
     .text("Reset Filters")
     .style("margin-top", "10px")
@@ -239,8 +264,21 @@ d3.json("./data/movies.json").then(function (data) {
         svg.selectAll("circle")
             .transition()
             .duration(300)
-            .style("opacity", 0.7); // Reset opacity for all bubbles
+            .style("opacity", 0.7); 
     });
+
+    createAccordion(buttonContainer, "by Language", languageOccurrences, "language");
+    createAccordion(buttonContainer, "by Genre", genreOccurrences, "genre");
+
+    svg.selectAll("circle")
+        .transition()
+        .duration(500)
+        .attr("r", d => Math.sqrt(d.duration) * 1.5)
+        .style("opacity", d => {
+            const matchesLanguage = !activeFilters.language.length || activeFilters.language.every(lang => d.languages.includes(lang));
+            const matchesGenre = !activeFilters.genre.length || activeFilters.genre.every(genre => d.genres.includes(genre));
+            return matchesLanguage && matchesGenre ? 0.7 : 0.1;
+        });
 
 });
 
