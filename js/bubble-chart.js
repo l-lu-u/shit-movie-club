@@ -1,7 +1,7 @@
 // Set dimensions and margins
 const width = 600;
 const height = 600;
-const margin = { top: 40, right: 20, bottom: 20, left: 70 };
+const margin = { top: 40, right: 20, bottom: 30, left: 70 };
 const totalMovies = 23;
 
 // Append SVG
@@ -128,18 +128,20 @@ d3.json("./data/movies.json").then(function (data) {
 
     // Add axis label
     svg.append("text")
-        .attr("y", margin.top / 2)
-        .attr("x", margin.left / 2)
+        .attr("y", margin.top/2)
+        .attr("x", 0)
         .style("text-anchor", "left")
         .style("font-size", "1.4rem")
-        .text("Produced in");
+        .style("stroke", "#86825f")
+        .text("Produced in ↓");
 
     svg.append("text")
-        .attr("y", height)
-        .attr("x", width - 4*margin.right)
-        .style("text-anchor", "right")
+        .attr("y", height-margin.bottom*0.4)
+        .attr("x", margin.left*0.2)
+        .style("text-anchor", "center")
         .style("font-size", "1.4rem")
-        .text("Watched in");
+        .style("stroke", "#86825f")
+        .text("Watched in →");
 
     svg.selectAll(".domain").remove();
 
@@ -265,9 +267,9 @@ d3.json("./data/movies.json").then(function (data) {
     .text("Reset Filters")
     .style("margin-top", "10px")
     .style("padding", "10px")
-    .style("background-color", "lightgray")
+    .style("background-color", "darkkhaki")
     .on("click", () => {
-        activeFilters = { language: [], genre: [] }; // Reset active filters
+        activeFilters = { language: [], genre: [] }; 
         d3.selectAll(".language-buttons button, .genre-buttons button").classed("active", false);
         svg.selectAll("circle")
             .transition()
