@@ -1,6 +1,6 @@
 // Set dimensions and margins
-const width = 600;
-const height = 600;
+const width = Math.min(600,window.innerWidth);
+const height = Math.min(600,window.innerHeight);
 const margin = { top: 40, right: 20, bottom: 30, left: 70 };
 const totalMovies = 23;
 
@@ -147,13 +147,7 @@ d3.json("./data/movies.json").then(function (data) {
 
     // Tooltip
     const tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("position", "absolute")
-        .style("visibility", "hidden")
-        .style("background-color", "white")
-        .style("border", "1px solid black")
-        .style("padding", "10px")
-        .style("border-radius", "5px");
+        .attr("class", "tooltip");
 
     const offset = 5;
     const bubblePositions = {};
@@ -212,7 +206,7 @@ d3.json("./data/movies.json").then(function (data) {
         const group = container.append("div").attr("class", `${filterType}-group`);
 
         // Accordion title
-        const header = group.append("h4")
+        const header = group.append("h3")
             .text(title)
             .style("cursor", "pointer")
             .on("click", function () {
