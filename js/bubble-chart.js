@@ -16,6 +16,7 @@ d3.json("./data/movies.json").then(function (data) {
     const processedData = data.data.map((d) => ({
         id: d.id,
         title: d.title,
+        original: d.original,
         director: d.director ? d.director.split(",").map((s) => s.trim()) : [],
         yearProduction: +d.year_production,
         screeningDate: d.when ? d3.timeParse("%m/%Y")(d.when) : null,
@@ -23,6 +24,7 @@ d3.json("./data/movies.json").then(function (data) {
         languages: d.languages ? d.languages.split(",").map((s) => s.trim()) : [],
         duration: +d.duration || 0,
         link: d.link,
+        image: d.image,
     }));
 
     const languages = Array.from(new Set(processedData.flatMap(d => d.languages))); // Unique languages
@@ -136,18 +138,22 @@ d3.json("./data/movies.json").then(function (data) {
         .text("Produced in ↓");
 
     svg.append("text")
-        .attr("y", height-margin.bottom*0.4)
-        .attr("x", margin.left*0.2)
-        .style("text-anchor", "center")
+        .attr("y", height-margin.bottom*0.3)
+        .attr("x", 0)
+        .style("text-anchor", "left")
         .style("font-size", "1.4rem")
         .style("stroke", "#86825f")
         .text("Watched in →");
 
     svg.selectAll(".domain").remove();
 
-    // Tooltip
+    // Tooltip & Details
     const tooltip = d3.select("body").append("div")
         .attr("class", "tooltip");
+    const detailContainer = d3.select("#little-tv");
+    const detailedTitle = d3.select("#movie-title");
+    const detailedImage = d3.select("#movie-img");
+    const detailedContent = d3.select("#movie-details");
 
     const offset = 5;
     const bubblePositions = {};
@@ -163,29 +169,57 @@ d3.json("./data/movies.json").then(function (data) {
             return bubblePositions[d.screeningDate];
         })
         .attr("cy", (d) => yScale(d.yearProduction))
-        .attr("r", (d) => Math.sqrt(d.duration) * 1.5) // Scaled radius
+        .attr("r", (d) => Math.sqrt(d.duration) * 2)
         .style("fill", "darkkhaki")
         .style("opacity", 0.7)
         .on("mouseover", function (event, d) {
+            if (d.isFiltered) return; // Skip interaction for filtered-out bubbles
             tooltip.style("display", "block")
-                .html(
-                    `<strong>${d.title}</strong><br>` +
-                    `Director: ${d.director.join(", ")}<br>` +
-                    `Year: ${d.yearProduction}<br>` +
-                    `Duration: ${d.duration} min<br>` +
-                    `Genres: ${d.genres.join(", ")}<br>` +
-                    `<a href="${d.link}" target="_blank">More Info</a>`
-                )
+                .html(`<strong>${d.title}</strong> (${d.yearProduction})`)
                 .style("left", `${event.pageX + 10}px`)
                 .style("top", `${event.pageY + 10}px`);
-            d3.select(this).style("stroke", "black").style("opacity", 1);
+            detailedTitle.html('<strong>' + d.title + '</strong> (' + d.yearProduction + ')' + '<i> ' + d.original + '</i>');
+            detailedContent.html(`<strong>Director:</strong> ${d.director.join(", ")} <br/>
+             <strong>Length:</strong> ${d.duration} minutes<br/>
+             <strong>Genres:</strong> ${d.genres.join(", ")}`); 
+            if (d.image) {
+                detailedImage.attr("src", './images/'+ d.image +'.jpg');
+            } else {
+                detailedImage.attr("src", 'watch-it-on-demo.day');
+                detailedImage.attr("alt", 'watch-it-on-demo-day');
+            }
+            d3.select(this).style("stroke", "#86825f").style("opacity", 1);
         })
         .on("mousemove", function (event) {
             tooltip.style("left", `${event.pageX + 10}px`).style("top", `${event.pageY + 10}px`);
         })
-        .on("mouseout", function () {
+        .on("mouseout", function (d) {
             tooltip.style("display", "none");
-            d3.select(this).style("stroke", "none").style("opacity", 0.7);
+            detailedImage.attr("src", "./images/dung-beetle.gif");
+            detailedTitle.html("");
+            detailedContent.html("");
+            if (!d.isFiltered) {
+                d3.select(this).style("stroke", "none").style("opacity", 0.7);
+            }
+        })
+        .on("click", function (event, d) {
+            if (d.isFiltered) return;
+            detailedTitle.html('<strong>' + d.title + '</strong> (' + d.yearProduction + ')' + '<i> ' + d.original + '</i>');
+            if (d.image) {
+                detailedImage.attr("src", './images/'+ d.image +'.jpg');
+            } else {
+                detailedImage.attr("src", './images/dung-beetle.gif');
+                detailedContent.html.add("Watch it on Demo Day.");
+            }
+            detailedContent.html(`<strong>Director:</strong> ${d.director.join(", ")} <br/>
+             <strong>Length:</strong> ${d.duration} minutes<br/>
+             <strong>Genres:</strong> ${d.genres.join(", ")}`); 
+            if (d.image) {
+                detailedImage.attr("src", './images/'+ d.image +'.jpg');
+            } else {
+                detailedImage.attr("src", 'watch-it-on-demo.day');
+                detailedImage.attr("alt", 'watch-it-on-demo-day');
+            }
         });
 
      svg.selectAll("circle")
@@ -264,20 +298,20 @@ d3.json("./data/movies.json").then(function (data) {
             .style("opacity", d => {
                 const matchesLanguage = activeFilters.language.length === 0 || activeFilters.language.some(lang => d.languages.includes(lang));
                 const matchesGenre = activeFilters.genre.length === 0 || activeFilters.genre.some(gen => d.genres.includes(gen));
-                return matchesLanguage && matchesGenre ? 0.7 : 0.1;
-            });
+                const isVisible = matchesLanguage && matchesGenre;
+                d.isFiltered = !isVisible; // Add filtered flag
+                return isVisible ? 0.7 : 0.1;
+            })
+            .style("pointer-events", d => (d.isFiltered ? "none" : "all"));
     }
 
-
-    
-
-    createAccordion(buttonContainer, "by Language", languageOccurrences, "language");
-    createAccordion(buttonContainer, "by Genre", genreOccurrences, "genre");
+    createAccordion(buttonContainer, "Language", languageOccurrences, "language");
+    createAccordion(buttonContainer, "Genre", genreOccurrences, "genre");
 
     svg.selectAll("circle")
         .transition()
         .duration(500)
-        .attr("r", d => Math.sqrt(d.duration) * 1.5)
+        .attr("r", d => Math.sqrt(d.duration) *1.5)
         .style("opacity", d => {
             const matchesLanguage = !activeFilters.language.length || activeFilters.language.every(lang => d.languages.includes(lang));
             const matchesGenre = !activeFilters.genre.length || activeFilters.genre.every(genre => d.genres.includes(genre));
