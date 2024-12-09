@@ -200,15 +200,12 @@ d3.json("./data/movies.json").then(function (data) {
     .attr("class", "button-container");
 
     let activeFilters = { language: [], genre: [] }; // Track active filters
-
-    // Function to create buttons with accordion
     function createAccordion(container, title, data, filterType) {
         const group = container.append("div").attr("class", `${filterType}-group`);
-
-        // Accordion title
         const header = group.append("h3")
             .text(title)
             .style("cursor", "pointer")
+            .attr("class","expanded")
             .on("click", function () {
                 const isExpanded = d3.select(this).classed("expanded");
                 d3.select(this).classed("expanded", !isExpanded);
@@ -217,7 +214,7 @@ d3.json("./data/movies.json").then(function (data) {
 
         const buttonsContainer = group.append("div")
             .attr("class", `${filterType}-buttons`)
-            .style("display", "none"); // Initially collapsed;
+            .style("display", "block");
 
         const buttons = buttonsContainer.selectAll("div")
             .data(data)
