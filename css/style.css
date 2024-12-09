@@ -118,7 +118,7 @@ h3 {
 /* FILTER */
 .button-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
 }
 .button-container button {
@@ -148,7 +148,13 @@ h3 {
 
 .button-container .button-reset{
     background-color: darkkhaki;
-    color: var(--bg-light)
+    color: var(--bg-light);
+
+}
+
+.language-group, .genre-group {
+
+    width: 180px;
 }
 
 .language-group h3::before, .genre-group h3::before {
