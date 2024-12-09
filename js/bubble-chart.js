@@ -1,6 +1,6 @@
 // Set dimensions and margins
-const width = Math.min(600,window.innerWidth);
-const height = Math.min(600,window.innerWidth);
+const width = Math.min(700,window.innerWidth);
+const height = Math.min(700,window.innerWidth);
 const margin = { top: 40, right: 20, bottom: 30, left: 70 };
 const totalMovies = 23;
 
@@ -167,7 +167,7 @@ d3.json("./data/movies.json").then(function (data) {
         .style("fill", "darkkhaki")
         .style("opacity", 0.7)
         .on("mouseover", function (event, d) {
-            tooltip.style("visibility", "visible")
+            tooltip.style("display", "block")
                 .html(
                     `<strong>${d.title}</strong><br>` +
                     `Director: ${d.director.join(", ")}<br>` +
@@ -184,7 +184,7 @@ d3.json("./data/movies.json").then(function (data) {
             tooltip.style("left", `${event.pageX + 10}px`).style("top", `${event.pageY + 10}px`);
         })
         .on("mouseout", function () {
-            tooltip.style("visibility", "hidden");
+            tooltip.style("display", "none");
             d3.select(this).style("stroke", "none").style("opacity", 0.7);
         });
 
