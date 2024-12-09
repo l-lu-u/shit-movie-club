@@ -1,6 +1,6 @@
 // Set dimensions and margins
 const width = Math.min(600,window.innerWidth);
-const height = Math.min(600,window.innerHeight);
+const height = Math.min(600,window.innerWidth);
 const margin = { top: 40, right: 20, bottom: 30, left: 70 };
 const totalMovies = 23;
 
