@@ -105,16 +105,16 @@ h3 {
 }
 
 .site-intro {
-    max-width: 400px;
+    min-width: 400px;
+    width: 20%;
     padding-left: 0;
     padding-right: 3rem;
-    flex-grow: 1;
 }
 
 #bubble-chart {
     display: flex;
-    justify-content: center;
-    flex-grow: 2;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 /* FILTER */
@@ -122,11 +122,15 @@ h3 {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    flex-grow: 1;
     flex-wrap: wrap;
-    justify-content: center;
 }
-.button-container button {
+
+#chart-sort {
+    display: flex;
+    flex-direction: column;
+}
+
+#chart-sort button {
     position: relative;
     padding: 5px 10px;
     border: none;
@@ -141,26 +145,25 @@ h3 {
     color: var(--content-primary)
 }
 
-.button-container button:hover {
+#chart-sort button:hover {
     background-color: khaki;
     color: var(--content-primary);
 }
 
-.button-container button.active{
+#chart-sort button.active{
     background-color: DarkSeaGreen;
     color: var(--bg-light)
 }
 
-.button-container .button-reset{
+#chart-sort .button-reset{
     background-color: darkkhaki;
     color: var(--bg-light);
-    width: 200px;
-    margin-right: 2rem;
 }
 
 .language-group, .genre-group {
     width: 200px;
-    margin-right: 1rem;
+    padding-right: 1rem;
+    margin-top: 2rem;
 }
 
 .language-group h3::before, .genre-group h3::before {
@@ -170,6 +173,15 @@ h3 {
 
 .language-group h3.expanded::before, .genre-group h3.expanded::before {
     content:"x";
+}
+
+.language-group h3, .genre-group h3 {
+    padding-bottom: 1rem;
+    border-bottom: 2px dotted var(--content-primary);
+}
+
+.language-group h3.expanded, .genre-group h3.expanded {
+    border-bottom: none;
 }
 
 .genre-button, .language.button {

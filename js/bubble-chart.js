@@ -195,7 +195,22 @@ d3.json("./data/movies.json").then(function (data) {
         .style("opacity", 0.7);
 
    // Append button groups for filtering
-    const buttonContainer = d3.select("#section-bubble")
+   d3.select("#chart-sort")
+    .append("button")
+    .attr("class","button-reset")
+    .text("Reset Filters")
+    .style("margin-top", "10px")
+    .style("padding", "10px")
+    .on("click", () => {
+        activeFilters = { language: [], genre: [] }; 
+        d3.selectAll(".language-buttons button, .genre-buttons button").classed("active", false);
+        svg.selectAll("circle")
+            .transition()
+            .duration(300)
+            .style("opacity", 0.7); 
+    });
+    
+    const buttonContainer = d3.select("#chart-sort")
     .append("div")
     .attr("class", "button-container");
 
@@ -254,19 +269,7 @@ d3.json("./data/movies.json").then(function (data) {
     }
 
 
-    buttonContainer.append("button")
-    .attr("class","button-reset")
-    .text("Reset Filters")
-    .style("margin-top", "10px")
-    .style("padding", "10px")
-    .on("click", () => {
-        activeFilters = { language: [], genre: [] }; 
-        d3.selectAll(".language-buttons button, .genre-buttons button").classed("active", false);
-        svg.selectAll("circle")
-            .transition()
-            .duration(300)
-            .style("opacity", 0.7); 
-    });
+    
 
     createAccordion(buttonContainer, "by Language", languageOccurrences, "language");
     createAccordion(buttonContainer, "by Genre", genreOccurrences, "genre");
