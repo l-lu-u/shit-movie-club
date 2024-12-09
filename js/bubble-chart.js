@@ -264,10 +264,10 @@ d3.json("./data/movies.json").then(function (data) {
 
 
     buttonContainer.append("button")
+    .attr("class","button-reset")
     .text("Reset Filters")
     .style("margin-top", "10px")
     .style("padding", "10px")
-    .style("background-color", "darkkhaki")
     .on("click", () => {
         activeFilters = { language: [], genre: [] }; 
         d3.selectAll(".language-buttons button, .genre-buttons button").classed("active", false);
