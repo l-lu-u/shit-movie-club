@@ -1,6 +1,6 @@
 // Set dimensions and margins
-const width = Math.min(700,window.innerWidth);
-const height = Math.min(700,window.innerWidth);
+const width = Math.min(850,window.innerWidth);
+const height = Math.min(850,window.innerWidth);
 const margin = { top: 40, right: 20, bottom: 30, left: 70 };
 const totalMovies = 23;
 
@@ -238,9 +238,8 @@ d3.json("./data/movies.json").then(function (data) {
             .transition()
             .duration(300)
             .style("opacity",d => {
-                const isVisible = true;
-                d.isFiltered = !isVisible; 
-                return isVisible ? 0.7 : 0.1;
+                d.isFiltered = false; 
+                return 0.7;
             })
             .style("pointer-events", "all"); 
     });
