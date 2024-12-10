@@ -210,6 +210,7 @@ d3.json("./data/movies.json").then(function (data) {
                 detailedContent.html.add("Watch it on Demo Day.");
             }
             detailedContent.html(`<strong>Director:</strong> ${d.director.join(", ")} <br/>
+             <strong>Watched in:</strong> ${d3.timeFormat("%m/%Y")(d.screeningDate)}<br/>
              <strong>Length:</strong> ${d.duration} minutes<br/>
              <strong>Genres:</strong> ${d.genres.join(", ")}`); 
             if (d.image) {
