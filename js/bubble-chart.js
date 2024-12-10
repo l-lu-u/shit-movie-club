@@ -40,22 +40,18 @@ d3.json("./data/movies.json").then(function (data) {
         count: processedData.filter(d => d.genres.includes(genre)).length,
     }));
 
-    // Sort by occurrence
     languageOccurrences.sort((a, b) => b.count - a.count);
     genreOccurrences.sort((a, b) => b.count - a.count);
 
-    // Total occurrences for percentage calculation
     const totalLanguages = d3.sum(languageOccurrences, d => d.count);
     const totalGenres = d3.sum(genreOccurrences, d => d.count);
 
-    // Sort data by screeningDate, then by id
     processedData.sort((a, b) => {
         if (a.screeningDate < b.screeningDate) return -1;
         if (a.screeningDate > b.screeningDate) return 1;
         return a.id.localeCompare(b.id);
     });
 
-    // Scales
     const xScale = d3.scaleTime()
         .domain([new Date(2023, 1, 1), new Date(2024, 12, 31)]) // Jan 2023 to Dec 2024
         .range([margin.left, width - margin.right]);
@@ -173,7 +169,7 @@ d3.json("./data/movies.json").then(function (data) {
         .style("fill", "darkkhaki")
         .style("opacity", 0.7)
         .on("mouseover", function (event, d) {
-            if (d.isFiltered) return; // Skip interaction for filtered-out bubbles
+            if (d.isFiltered) return;
             tooltip.style("display", "block")
                 .html(`<strong>${d.title}</strong> (${d.yearProduction})`)
                 .style("left", `${event.pageX + 10}px`)
@@ -241,7 +237,12 @@ d3.json("./data/movies.json").then(function (data) {
         svg.selectAll("circle")
             .transition()
             .duration(300)
-            .style("opacity", 0.7); 
+            .style("opacity",d => {
+                const isVisible = true;
+                d.isFiltered = !isVisible; 
+                return isVisible ? 0.7 : 0.1;
+            })
+            .style("pointer-events", "all"); 
     });
     
     const buttonContainer = d3.select("#chart-sort")
@@ -299,7 +300,7 @@ d3.json("./data/movies.json").then(function (data) {
                 const matchesLanguage = activeFilters.language.length === 0 || activeFilters.language.some(lang => d.languages.includes(lang));
                 const matchesGenre = activeFilters.genre.length === 0 || activeFilters.genre.some(gen => d.genres.includes(gen));
                 const isVisible = matchesLanguage && matchesGenre;
-                d.isFiltered = !isVisible; // Add filtered flag
+                d.isFiltered = !isVisible; 
                 return isVisible ? 0.7 : 0.1;
             })
             .style("pointer-events", d => (d.isFiltered ? "none" : "all"));
