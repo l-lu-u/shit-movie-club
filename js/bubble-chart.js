@@ -176,10 +176,12 @@ d3.json("./data/movies.json").then(function (data) {
                 .style("top", `${event.pageY + 10}px`);
             detailedTitle.html('<strong>' + d.title + '</strong> (' + d.yearProduction + ')' + '<i> ' + d.original + '</i>');
             detailedContent.html(`<strong>Director:</strong> ${d.director.join(", ")} <br/>
+             <strong>Watched in:</strong> ${d3.timeFormat("%m/%Y")(d.screeningDate)}<br/>
              <strong>Length:</strong> ${d.duration} minutes<br/>
              <strong>Genres:</strong> ${d.genres.join(", ")}`); 
             if (d.image) {
                 detailedImage.attr("src", './images/'+ d.image +'.jpg');
+                detailedImage.attr("alt", d.title);
             } else {
                 detailedImage.attr("src", 'watch-it-on-demo.day');
                 detailedImage.attr("alt", 'watch-it-on-demo-day');
@@ -248,7 +250,7 @@ d3.json("./data/movies.json").then(function (data) {
     .append("div")
     .attr("class", "button-container");
 
-    let activeFilters = { language: [], genre: [] }; // Track active filters
+    let activeFilters = { language: [], genre: [] };
     function createAccordion(container, title, data, filterType) {
         const group = container.append("div").attr("class", `${filterType}-group`);
         const header = group.append("h3")

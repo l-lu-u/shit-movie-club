@@ -46,6 +46,9 @@
 html {
     font-size: 10px;
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: darkkhaki khaki;
+    overflow-y: scroll;
 }
 
 body {
@@ -54,16 +57,10 @@ body {
     color: var(--content-primary);
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
     font-weight: 500;
     padding: 1rem;
-}
-html,
-body,
-section {
-    background-color: var(--bg-light);
-    scrollbar-width: thin;
-    scrollbar-color: darkkhaki khaki;
+    background: linear-gradient(30deg, ghostwhite 0%, lavender 50%, var(--bg-light) 85%);
 }
 
 h1, h2, h3, h4 {
@@ -89,7 +86,8 @@ h3 {
 /* SECTION */
 .section-column {
     width: 100%;
-    min-height: 100%;
+}
+#section-bubble {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -97,12 +95,15 @@ h3 {
     align-content: flex-start;
     flex-wrap: wrap;
 }
-
 .site-info {
     flex:1;
     margin-right: 2rem;
 }
-
+.site-endnote {
+    padding-top: 2rem;
+    width: 30%;
+    min-width: 400px;
+}
 #bubble-chart {
     display: flex;
 }
@@ -229,4 +230,10 @@ h3 {
 
 #movie-title {
     margin: 1rem 0;
+}
+
+/* Garden */
+#flower-canvas {
+    width:100%;
+    height: 800px;
 }
