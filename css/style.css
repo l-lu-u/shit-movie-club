@@ -45,10 +45,10 @@
 /* Container */
 html {
     font-size: 10px;
+    overflow-y: scroll;
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: darkkhaki khaki;
-    overflow-y: scroll;
 }
 
 body {
@@ -57,10 +57,23 @@ body {
     color: var(--content-primary);
     display: flex;
     flex-direction: column;
-    height: auto;
     font-weight: 500;
     padding: 1rem;
-    background: linear-gradient(30deg, ghostwhite 0%, lavender 50%, var(--bg-light) 85%);
+    background: linear-gradient(45deg, ghostwhite, lavender, var(--bg-light));
+    animation: gradient 15s ease infinite;
+    background-size: 100%;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 h1, h2, h3, h4 {
