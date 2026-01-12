@@ -2,7 +2,7 @@
 const width = Math.min(850,window.innerWidth);
 const height = Math.min(850,window.innerWidth);
 const margin = { top: 40, right: 20, bottom: 30, left: 70 };
-const totalMovies = 23;
+const totalMovies = 29;
 
 // Append SVG
 const svg = d3.select("#bubble-chart")
@@ -53,7 +53,7 @@ d3.json("./data/movies.json").then(function (data) {
     });
 
     const xScale = d3.scaleTime()
-        .domain([new Date(2023, 1, 1), new Date(2025, 12, 31)]) // Jan 2023 to Dec 2024
+        .domain([new Date(2023, 1, 1), new Date(2025, 12, 31)]) // Jan 2023 to Dec 2025
         .range([margin.left, width - margin.right]);
 
     const yScale = d3.scaleLinear()
