@@ -1,5 +1,4 @@
-{
-    "data": [
+[
   {
     "id": "SMC0001",
     "title": "The Man who Saves the World",
@@ -509,41 +508,19 @@
   {
     "id": "SMC0024",
     "title": "Archipelago Science Fiction",
-    "original": "",
-    "director": "",
-    "year_production": "",
-    "when": "",
-    "year_screen": "",
-    "month_screen": "",
-    "languages": "",
-    "genres": "",
-    "duration (h+m)": "",
-    "duration": "",
-    "link": "",
-    "image": "",
-    "rating_imdb": "",
-    "nudity": "",
-    "violence": "",
-    "profanity": "",
-    "substance": "",
-    "scary": ""
-  },
-  {
-    "id": "Archipelago sci-fi\"",
-    "title": "Tellervo Kalleinen, Oliver Kochta-Kalleinen",
-    "original": "2012",
-    "director": "12/2024",
-    "year_production": "2024",
-    "when": "12",
-    "year_screen": "Swedish, English, Finnish, Chinese",
-    "month_screen": "Documentary, Short, Comedy, Drama",
-    "languages": "25m",
-    "genres": "25",
-    "duration (h+m)": "https://www.imdb.com/title/tt3080590/",
-    "duration": "SMC0024",
-    "link": "6.6",
-    "image": "",
-    "rating_imdb": "",
+    "original": "Archipelago sci-fi",
+    "director": "Tellervo Kalleinen, Oliver Kochta-Kalleinen",
+    "year_production": "2012",
+    "when": "12/2024",
+    "year_screen": "2024",
+    "month_screen": "12",
+    "languages": "Swedish, English, Finnish, Chinese",
+    "genres": "Documentary, Short, Comedy, Drama",
+    "duration (h+m)": "25m",
+    "duration": "25",
+    "link": "https://www.imdb.com/title/tt3080590/",
+    "image": "SMC0024",
+    "rating_imdb": "6.6",
     "nudity": "",
     "violence": "",
     "profanity": "",
@@ -661,4 +638,3 @@
     "scary": ""
   }
 ]
-}
