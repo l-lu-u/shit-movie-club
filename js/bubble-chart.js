@@ -60,6 +60,7 @@ d3.json("./data/movies.json").then(function (data) {
     const minYear = d3.min(years);
     const maxYear = d3.max(years);
     const yMin = Math.floor(minYear / 5) * 5;
+    console.log(yMin);
     const yMax = Math.ceil(maxYear / 5) * 5;
 
     const xScale = d3.scaleTime()
