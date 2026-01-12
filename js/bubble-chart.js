@@ -53,7 +53,7 @@ d3.json("./data/movies.json").then(function (data) {
     });
 
     const xScale = d3.scaleTime()
-        .domain([new Date(2023, 1, 1), new Date(2024, 12, 31)]) // Jan 2023 to Dec 2024
+        .domain([new Date(2023, 1, 1), new Date(2025, 12, 31)]) // Jan 2023 to Dec 2024
         .range([margin.left, width - margin.right]);
 
     const yScale = d3.scaleLinear()
