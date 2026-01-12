@@ -52,15 +52,22 @@ d3.json("./data/movies.json").then(function (data) {
         return a.id.localeCompare(b.id);
     });
 
+
+    // Production Years
+    const years = processedData
+        .map(d => d.yearProduction)
+        .filter(y => Number.isFinite(y));
+    const minYear = d3.min(years);
+    const maxYear = d3.max(years);
+    const yMin = Math.floor(minYear / 5) * 5;
+    const yMax = Math.ceil(maxYear / 5) * 5;
+
     const xScale = d3.scaleTime()
         .domain([new Date(2023, 1, 1), new Date(2025, 12, 31)]) // Jan 2023 to Dec 2025
         .range([margin.left, width - margin.right]);
 
     const yScale = d3.scaleLinear()
-        .domain([
-            Math.floor(d3.min(processedData, (d) => d.yearProduction) / 5) * 5,
-            Math.ceil(d3.max(processedData, (d) => d.yearProduction) / 5) * 5,
-        ])
+        .domain([yMin, yMax])
         .range([height - margin.bottom, margin.top]);
 
     const xAxis = d3.axisBottom(xScale)
@@ -68,13 +75,7 @@ d3.json("./data/movies.json").then(function (data) {
         .tickFormat(d3.timeFormat("%m/%Y"));
 
     const yAxis = d3.axisLeft(yScale)
-        .tickValues(
-            d3.range(
-                Math.floor(d3.min(processedData, (d) => d.yearProduction) / 5) * 5,
-                Math.ceil(d3.max(processedData, (d) => d.yearProduction) / 5) * 5 + 1,
-                5
-            )
-        )
+        .tickValues(d3.range(yMin, yMax + 1, 5)) 
         .tickFormat(d3.format("d"));
 
     const xGrid = d3.axisBottom(xScale)
