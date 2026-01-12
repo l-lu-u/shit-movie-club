@@ -486,6 +486,50 @@
   },
   {
     "id": "SMC0023",
+    "title": "The Crowing",
+    "original": "Kukoistus",
+    "director": "Vertti Luostarinen",
+    "year_production": "2022",
+    "when": "12/2023",
+    "year_screen": "2024",
+    "month_screen": "12",
+    "languages": "Finnish",
+    "genres": "Horror",
+    "duration (h+m)": "15m",
+    "duration": "15",
+    "link": "",
+    "image": "",
+    "rating_imdb": "",
+    "nudity": "",
+    "violence": "",
+    "profanity": "",
+    "substance": "",
+    "scary": ""
+  },
+  {
+    "id": "SMC0024",
+    "title": "Papa Djinn Breakfast House",
+    "original": "Cinli Baba Kahvaltı Evi",
+    "director": "Burak Türköz",
+    "year_production": "2020",
+    "when": "12/2023",
+    "year_screen": "2024",
+    "month_screen": "12",
+    "languages": "Turkish",
+    "genres": "Horror",
+    "duration (h+m)": "3m",
+    "duration": "3",
+    "link": "",
+    "image": "",
+    "rating_imdb": "",
+    "nudity": "",
+    "violence": "",
+    "profanity": "",
+    "substance": "",
+    "scary": ""
+  },
+  {
+    "id": "SMC0025",
     "title": "The Butterfly from Ural",
     "original": "Uralin perhonen",
     "director": "Katariina Lillqvist",
@@ -498,7 +542,7 @@
     "duration (h+m)": "27m",
     "duration": "27",
     "link": "https://www.imdb.com/title/tt1207784/?ref_=ttrel_ov",
-    "image": "SMC0023",
+    "image": "SMC0025",
     "rating_imdb": "5.9",
     "nudity": "Mild",
     "violence": "Moderate",
@@ -507,7 +551,7 @@
     "scary": ""
   },
   {
-    "id": "SMC0024",
+    "id": "SMC0026",
     "title": "Archipelago Science Fiction",
     "original": "Archipelago sci-fi",
     "director": "Tellervo Kalleinen, Oliver Kochta-Kalleinen",
@@ -520,7 +564,7 @@
     "duration (h+m)": "25m",
     "duration": "25",
     "link": "https://www.imdb.com/title/tt3080590/",
-    "image": "SMC0024",
+    "image": "SMC0026",
     "rating_imdb": "6.6",
     "nudity": "",
     "violence": "",
@@ -529,7 +573,7 @@
     "scary": ""
   },
   {
-    "id": "SMC0025",
+    "id": "SMC0027",
     "title": "Conceiving Ada",
     "original": "",
     "director": "Lynn Hershman Leeson",
@@ -542,7 +586,7 @@
     "duration (h+m)": "1h 25m",
     "duration": "85",
     "link": "https://www.imdb.com/title/tt0118882/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_Conceiving%2520Ada",
-    "image": "SMC0025",
+    "image": "SMC0027",
     "rating_imdb": "5",
     "nudity": "",
     "violence": "",
@@ -551,7 +595,7 @@
     "scary": ""
   },
   {
-    "id": "SMC0026",
+    "id": "SMC0028",
     "title": "El Mate Amargo",
     "original": "",
     "director": "Demián Rugna",
@@ -573,7 +617,7 @@
     "scary": ""
   },
   {
-    "id": "SMC0027",
+    "id": "SMC0029",
     "title": "Junior",
     "original": "",
     "director": "Ivan Reitman",
@@ -595,7 +639,7 @@
     "scary": ""
   },
   {
-    "id": "SMC0028",
+    "id": "SMC0030",
     "title": "The Happiness of the Katakuris",
     "original": "カタクリ家の幸福",
     "director": "Takashi Miike",
@@ -617,7 +661,7 @@
     "scary": ""
   },
   {
-    "id": "SMC0029",
+    "id": "SMC0031",
     "title": "The Troubleshooters",
     "original": "顽主",
     "director": "Jiashan Mi",
