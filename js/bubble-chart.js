@@ -168,6 +168,7 @@ d3.json("./data/movies.json").then(function (data) {
         })
         .attr("cy", (d) => yScale(d.yearProduction))
         .attr("r", (d) => Math.sqrt(d.duration) * 2)
+        .attr("class", "shit-movie")
         .style("fill", "darkkhaki")
         .style("opacity", 0.7)
         .on("mouseover", function (event, d) {
